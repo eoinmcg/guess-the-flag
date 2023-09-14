@@ -1,0 +1,17 @@
+{
+  "name": "Guess The Flag",
+  "description": "Test your knowledge of country flags.",
+  "default_locale": "en",
+  "display": "standalone",
+  "version": "1.0",
+  "start_url": ".",
+  "background_color": "#dedede",
+  "color": "#333",
+  "icons": [
+    { "src": "./i/icon-192.png", "type": "image/png", "sizes": "192x192" },
+    { "src": "./i/icon-512.png", "type": "image/png", "sizes": "512x512" }
+  ],
+  "related_applications": [{
+    "platform": "web"
+  }]
+}
