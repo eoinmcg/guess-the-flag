@@ -3,177 +3,201 @@
 <head>
 <meta charset="UTF-8">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏳️</text></svg>">
 <title>Guess the flag</title>
 
 <style>
-body { color: #333; text-align: center; font-family: Inter, Roboto, 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', Arial, sans-serif; 
-background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(254,254,254,1) 35%, rgba(206,206,206,1) 100%); overflow: hidden;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
-h2 { font-size: 8rem; margin: 0; color: #666; }
-.container { max-width: 600px; margin: 2rem auto; background: rgba(255,255,255,0.2); color: #333; padding: 2rem; border-radius: 10px;  position: relative; }
 
-.container { border: none; overflow: hidden; height: 80vh; }
-button {  display: block; background: #efefef; border: 2px solid rgba(0,0,0,0.25); border-radius: 5px; padding: .5rem 1rem; width: 50%; margin: .5rem auto; font-size: 1rem; color: #333; font-weight: bold; 
-transition: background-color 100ms ease-in; color: 100ms ease-in; }
+body {
+  font: 1.25rem "Fira Sans", sans-serif;
+  color: #333;
+  display: grid;
+  justify-content: center;
+}
+body.fade-in { animation: fade-in 1s ease-in forwards; }
+
+main {
+  display: grid;
+  place-items: center;
+  max-width: 500px;
+  min-width: 90vw;
+  height: 80vh;
+  background: #fff;
+  padding: 2rem;
+  overflow: hidden;
+}
+
+main[data-state="intro"] .intro { display: block; }
+main[data-state="intro"] .card { display: none; }
+main[data-state="intro"] .score { display: none; }
+main[data-state="intro"] .gameover { display: none; }
+
+main[data-state="playing"] .intro { display: none; }
+main[data-state="playing"] .card { display: block; }
+main[data-state="playing"] .score { display: block; }
+main[data-state="playing"] .gameover { display: none; }
+
+main[data-state="gameover"] .intro { display: none; }
+main[data-state="gameover"] .card { display: none; }
+main[data-state="gameover"] .score { display: block; }
+main[data-state="gameover"] .gameover { display: block; }
+
+section { text-align: center; width: 100%; }
+section img { max-width: 300px; }
+section.card { position: relative; }
+h2.flag { font-size: 10rem; margin: 0; color: #666; }
+
+button {
+  display: block;
+  background: #efefef;
+  border: 2px solid rgba(0,0,0,0.25);
+  border-radius: 5px;
+  padding: .5rem 1rem;
+  width: 50%;
+  max-width: 350px;
+  margin: .5rem auto;
+  font-size: 1rem;
+  color: #333;
+  font-weight: bold;
+  transition: background-color 100ms ease-in; color: 100ms ease-in;
+}
 button:hover { cursor: pointer; background: green; color: #fff; }
 
-.hide { display: none; }
-.intro { transition: all 1000ms linear; }
-.intro.init h1 { opacity: 0; margin-left: -50rem; }
-.intro h1 { opacity: 1; margin-left: 0; transition: 700ms ease-in;}
-.intro.init img { opacity: 0; margin-right: -50rem; }
-.intro img { opacity: 1; margin: 0 0 2rem 0; transition: 700ms ease-in;}
-.intro.init button { margin-top: 10em; opacity: 0; }
-.intro button { margin-top: 0em; opacity: 1; transition: 700ms ease-in; }
-
-.card { margin-top: 0; transition: 200ms ease-in; }
 .card h2.flag { margin-top: 0; opacity: 1; transition: 100ms ease-in; }
-.card button { display: block; border: 2px solid rgba(0,0,0,0.25); border-radius: 5px; padding: .5rem 1rem;  margin: .5rem auto; font-size: 1rem; color: #333; font-weight: bold; }
 .card button.unanswered:hover { cursor: pointer; background: #666; color: #fff; }
 .card button.wrong { background: #c20; color: #fff; }
 .card button.correct { background: green; color: #fff; }
 
-.card.prep h2.flag { margin-top: -5em; opacity: 1; }
-.card h2.flag { margin-top: 0; opacity: 1; transition: 500ms ease-in; }
-.card.prep button:nth-child(1) { margin-top: -5em; opacity: 1; }
-.card button:nth-child(1) { margin-top: 0; opacity: 1; transition: 500ms ease-in; }
-.card.prep button:nth-child(2) { margin-top: -6em; opacity: 1; }
-.card button:nth-child(2) { margin-top: 0; opacity: 1; transition: 500ms ease-in; }
-.card.prep button:nth-child(3) { margin-top: -7em; opacity: 1; }
-.card button:nth-child(3) { margin-top: 0; opacity: 1; transition: 500ms ease-in; }
-.card.prep button:nth-child(4) { margin-top: -8em; opacity: 1; }
-.card button:nth-child(4) { margin-top: 0; opacity: 1; transition: 500ms ease-in; }
-.card.prep button:nth-child(5) { margin-top: -9em; opacity: 1; }
-.card button:nth-child(5) { margin-top: 0; opacity: 1; transition: 500ms ease-in; }
-.card.finish { margin-top: 50rem; }
-
-.gameover { margin-top: 0;  transition: all 1500ms ease-in; }
-.gameover.hide { margin-top: -10rem;  display: none; }
 .gameover h2 { font-size: 4rem; color: #c20; }
 .gameover p { font-size: 1.5rem; }
 
-.score { color: #666; font-weight: bold; font-size: 2rem; transition: 250ms ease-in-out; }
-.score.increase { font-size: 4rem; color: darkgreen; }
+.score {
+  position: absolute;
+  top: 1em;
+  right: 1rem;
+  font-weight: bold;
+  font-size: 2rem;
+  transition: all 250ms ease-in-out;
+}
+.score.pulse {
+  font-size: 4rem; color: darkgreen;
+}
 
-.progress { position: absolute; top: 1em; right: 1rem; }
-footer { position: fixed; bottom: 0; left: 0; width: 100%; text-align: center; color: #333; padding: .5rem; }
+footer { text-align: center; position: absolute; bottom: 1rem; width: 100vw; }
 footer a { color: #bbb; text-decoration: none; font-weight: bold; }
 footer a:hover { color: darkgreen; }
 
+.move-off { animation: 0.75s move-off ease-out forwards; animation-delay: 2s;}
+.move-on { animation: 0.75s move-on ease-in; }
+.move-off.no-delay { animation-delay: -2s !important; }
+
+@keyframes move-off {
+  from { opacity: 1; transform: translateX(0); }
+  to { opacity: 0; transform: translateX(110vw); }
+}
+@keyframes move-on {
+  from { opacity: 0; transform: translateX(-110vw); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
 @media (max-width: 600px) { button { width: 80%; } }
+
 </style>
 </head>
 <body>
 
-  <div class="container">
-    <div class="intro hide">
+  <main data-state="intro">
+    <span class="score">0</span>
+    <section class="intro">
       <h1>Guess The Flag</h1>
       <img src="i/icon.svg" width="50%" alt="Blank flag with a question mark">
       <button>Start</button>
-    </div>
+    </section>
 
-    <div class="card hide">
-      <div class="progress">
-        <span class="score">0</span><span class="hide turn">0</span>
-      </div>
+    <section class="card">
       <h2 class="flag"></h2>
       <div class="suggestions"> </div>
-    </div>
+    </section>
 
-    <div class="gameover hide">
+    <section class="gameover">
       <h2>Game Over</h2>
       <p></p>
       <button>Play Again</button>
-    </div>
-  </div>
+    </section>
+  </main>
 
   <footer><a href="https://eoinmcgrath.com">&copy; eoinmcg</a></footer>
 
 <script src="./zzfx.min.js"></script>
-<script>
+<script type="module">
+import data from './js/data.json' with { type: "json" };
+
 const ratings = ['💩','🤣','😴','🤪','👎','😓','😅','😃','🤓','🔥','⭐'];
 const sfx = {
-  gameover: [,,925,.04,.3,.6,1,.3,,6.27,-184,.09,.17],
   wrong: [1.02,0,65.40639,,.34,.2,2,1.09,,,,,,,,.1,,.33,.04],
-  correct: [1.26,,465,.06,.16,.43,2,.98,,,165,.03,.12,,,,,.45,.15,.21],
-  piano: [1.5,.8,270,,.1,,1,1.5,,,,,,,,.1,.01],
+  correct: [1.26,,465,.06,.16,.43,2,.98,,,165,.03,.12,,,,,.45,.15,.21]
 };
-const sfxPlay = (n) => {
-  zzfx(...sfx[n]);
-};
+const sfxPlay = n => zzfx(...sfx[n]);
  
-window.addEventListener('DOMContentLoaded', () => {
-
-    const countries = {};
-    let game = {};
-    async function loadCountries() {
-      const response = await fetch('countries.json');
-      return await response.json();
-    }
-
-    loadCountries()
-      .then((countries) => {
-        countries = JSON.parse(countries);
-        window.countries = countries;
-          game = new Game(countries);
-          game.init();
-        window.game = game;
-      });
-
     class Game {
       constructor(countries, numChoices = 5, turns = 10) {
         this.masterCountries = countries;
         this.numChoices = numChoices;
         this.turns = turns;
-        this.reset(this.masterCountries);
         this.DOM = {
           intro: document.querySelector('.intro'),
           startButton: document.querySelector('.intro button'),
           gameover: document.querySelector('.gameover'),
+          gameoverScore: document.querySelector('.gameover p'),
           result: document.querySelector('.gameover .result'),
           replayButton: document.querySelector('.gameover button'),
           card: document.querySelector('.card'),
           score: document.querySelector('.score'),
-          turn: document.querySelector('.turn'),
           flag: document.querySelector('.flag'),
           suggestions: document.querySelector('.suggestions'),
-          gameover: document.querySelector('.gameover'),
         }
-        this.DOM.score.innerText = this.score;
-        this.DOM.turn.innerText = this.turn;
       }
 
       init() {
-        this.batchTransition(this.DOM.intro,
-          'intro init', 'intro', 500);
-
-        //listeners
         this.DOM.startButton.addEventListener('click', (e) => {
           this.startGame();
         }, false);
 
-        this.DOM.gameover.querySelector('button').addEventListener('click', (e) => {
-          this.startGame();
-        }, false);
-
         document.querySelector('.suggestions').addEventListener('click', (e) => {
-          game.checkAnswer(e);
+          this.checkAnswer(e);
         });
 
         this.DOM.gameover.querySelector('button').addEventListener('click', (e) => {
           this.startGame();
+        });
+
+        this.DOM.card.addEventListener('animationend', (e) => {
+          const targetClass = e.target.classList;
+          if (targetClass.contains('move-off')) {
+            this.DOM.score.classList.remove('pulse');
+            this.nextTurn();
+            targetClass.remove('move-off', 'no-delay');
+            targetClass.add('move-on');
+          }
         });
       }
 
       reset(countries) {
         this.score = 0;
-        this.turn = 1;
-        this.countries = countries;
-        this.current = null;
-        this.countryKeys = this.shuffle(Object.keys(countries));
+        this.turn = 0;
+        this.countries = this.shuffle(countries);
+        this.answer = null;
       }
 
       shuffle(array) {
@@ -186,93 +210,81 @@ window.addEventListener('DOMContentLoaded', () => {
         return array;
       }
 
-      showCard() {
-        this.DOM.card.className = 'card hide';
-        this.current = this.countryKeys.splice(0, 1)[0];
-        this.DOM.flag.innerHTML = this.countries[this.current].emoji;
-        this.suggestions = [];
-        this.suggestions.push(this.current);
-        this.countryKeys.splice(0, this.numChoices - 1).forEach((c) => {
-          this.suggestions.push(c);
-        });
-        this.suggestions = this.shuffle(this.suggestions);
-        let html = this.DOM.suggestions
-        html.innerHTML = '';
-        this.suggestions.forEach((country) => {
-          html.innerHTML += `<button class="unanswered">${country}</button>`;
-        });
+    startGame() {
+      this.reset(this.masterCountries);
+      document.querySelector('main').dataset.state = 'playing';
+      this.DOM.score.innerText = this.score;
 
-        this.batchTransition(this.DOM.card,
-          'card prep', 'card', 100);
+      this.nextTurn();
+    }
+
+      showCard() {
+          const { card, suggestions, flag } = this.DOM;
+
+          this.answer = this.countries.shift();
+          flag.innerText = this.answer.flag;
+
+          const choices = this.shuffle([this.answer, ...this.countries.slice(0, this.numChoices - 1)]);
+          suggestions.innerHTML = choices.map(country => `<button class="unanswered">${country.name}</button>`).join('');
+          card.className = 'card move-on';
       }
 
       checkAnswer(e) {
         const target = e.target;
-        if (!target.tagName === 'BUTTON'
-          || this.DOM.suggestions.querySelector('button.correct')) {
-            return;
-        }
+        if (target.tagName !== 'BUTTON' || this.DOM.suggestions.querySelector('.correct')) return;
+
         target.classList.remove('unanswered');
-        if (target.innerText === this.current) {
-          target.className = 'correct';
+        const isCorrect = target.innerText === this.answer.name;
+
+        if (isCorrect) {
+          target.classList.add('correct');
           sfxPlay('correct');
-          if (this.DOM.suggestions.querySelectorAll('button.wrong').length === 0) {
-            this.score +=1 ;
-            this.batchTransition(this.DOM.score,
-              'score increase', 'score', 300);
-          }
-          if (this.turn === this.turns) {
-            window.setTimeout(() => {
-              return this.showGameOver();
-            }, 1000);
-          } else {
-            window.setTimeout(() => {
-              this.DOM.card.classList.add('finish');
-            }, 1000);
-            window.setTimeout(() => {
-              this.showCard();
-            }, 1500);
-            this.turn += 1;
-            this.DOM.score.innerText = this.score;
-          }
+          this.updateScore(target);
         } else {
           sfxPlay('wrong');
-          target.className = 'wrong';
+          target.classList.add('wrong');
         }
       }
 
-    batchTransition(el, before, after, delay) {
-      el.classList = before;
-      window.setTimeout(() => {
-        el.classList = after;
-      }, delay);
+  updateScore() {
+
+    if (!this.DOM.suggestions.querySelector('.wrong')) {
+      this.score++;
+      this.DOM.score.innerText = this.score;
+      this.DOM.score.classList.add('pulse')
     }
+
+    this.DOM.card.classList.remove('move-on');
+    this.DOM.card.classList.add('move-off');
+  }
+
+
+nextTurn() {
+    if (this.turn === this.turns) {
+      return this.showGameOver();
+    }
+    this.showCard();
+    this.turn++;
+}
 
     showGameOver() {
-      this.DOM.card.classList.add('hide');
-      let percentage = Math.floor(((this.score/this.turns) * 100) / 10);
+    document.querySelector('main').dataset.state = 'gameover';
+    // @TODO THIS WILL FAIL IF NOT 10 turns. FIXIT!
       let result = `You scored ${this.score} out of ${this.turn}
-       <br> Your rating: ${ratings[percentage]}`;
-      this.DOM.gameover.querySelector('p').innerHTML = result;;
-      this.DOM.gameover.classList.remove('hide');
-      this.batchTransition(this.DOM.gameover, 'gameover hide', 
-        'gameover', 500);
+       <br> Your rating: ${ratings[this.score]}`;
+      this.DOM.gameoverScore.innerHTML = result;
     }
-
-    startGame() {
-      this.DOM.gameover.classList.add('hide');
-      this.reset(this.masterCountries);
-      this.DOM.score.innerText = this.score;
-      this.DOM.turn.innerText = this.turn;
-      sfxPlay('piano');
-      this.DOM.intro.classList.add('hide');
-      document.querySelector('.card').classList.remove('hide');
-      this.showCard();
-    }
-
   }
-}, false);
+
+document.addEventListener('DOMContentLoaded', () => {
+document.body.classList.add('fade-in');
+  let game = new Game(data.countries);
+  game.init();
+  window.game = game;
+});
+
 </script>
 
 </body>
 </html>
+

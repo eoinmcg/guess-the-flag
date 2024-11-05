@@ -1,0 +1,72 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font: 1.25rem "Fira Sans", sans-serif;
+  color: #333;
+  display: grid;
+  justify-content: center;
+}
+
+main {
+  display: grid;
+  place-items: center;
+  max-width: 500px;
+  min-width: 90vw;
+  height: 80vh;
+  background: #fff;
+  padding: 2rem;
+}
+
+section { text-align: center; width: 100%; }
+h1 { font-size: 3rem; margin-bottom: 2rem; color: darkred; }
+section.intro p { margin-bottom: 2rem; }
+section.intro p.guess { font-size: 5rem; }
+h2.flag { font-size: 10rem; margin: 0; color: #666; }
+
+button {
+  display: block;
+  background: #efefef;
+  border: 2px solid rgba(0,0,0,0.25);
+  border-radius: 5px;
+  padding: .5rem 1rem;
+  width: 50%;
+  max-width: 350px;
+  margin: .5rem auto;
+  font-size: 1rem;
+  color: #333;
+  font-weight: bold;
+  transition: background-color 250ms, box-shadow .5s, border-color .5s
+}
+button:hover { cursor: pointer; background: lightblue; }
+button.wrong { background: darkred; color: #fff; opacity: 0.75; }
+button.correct {
+  background: limegreen;
+  color: #fff;
+  border-color: #fff;
+  box-shadow: 0 0 3px 3px limegreen;
+}
+
+.score { position: absolute; top: 1rem; center: 0; font-size: 2rem; }
+.hide { display: none; }
+
+.slide-off { animation: 0.75s slide-off ease-out forwards; animation-delay: 1s;}
+.slide-on { animation: 0.75s slide-on ease-in; }
+.slide.no-delay { animation-delay: -2s !important; }
+.fade-in { opacity: 0; animation: 1s fade-in ease-out forwards; }
+
+@keyframes slide-off {
+  from { opacity: 1; transform: translateX(0); }
+  to { opacity: 0; transform: translateX(50vw); }
+}
+@keyframes slide-on {
+  from { opacity: 0; transform: translateX(-50vw); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
