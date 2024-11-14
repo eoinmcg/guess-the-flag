@@ -5,10 +5,22 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏳️</text></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌍</text></svg>">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
+
 <title>Guess the flag</title>
 
 <style>
+@font-face {
+font-family: 'Impact Regular';
+font-style: normal;
+font-weight: normal;
+src: local('Impact Regular'), url('css/impact.woff') format('woff');
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -49,33 +61,49 @@ main[data-state="gameover"] .card { display: none; }
 main[data-state="gameover"] .score { display: block; }
 main[data-state="gameover"] .gameover { display: block; }
 
+h1 {
+  font-family: 'Impact Regular';
+  letter-spacing: .2rem;
+  font-size: 200%;
+  text-transform: uppercase;
+  color: darkslategray;
+  margin-bottom: 1rem;
+}
+
 section { text-align: center; width: 100%; }
-section img { max-width: 300px; }
 section.card { position: relative; }
 h2.flag { font-size: 10rem; margin: 0; color: #666; }
+section img { margin-bottom: 2rem; }
 
 button {
   display: block;
-  background: #efefef;
-  border: 2px solid rgba(0,0,0,0.25);
+  background: aliceblue;
+  border: 1px solid lightblue;
   border-radius: 5px;
   padding: .5rem 1rem;
   width: 50%;
   max-width: 350px;
-  margin: .5rem auto;
+  margin: .5rem auto 1rem auto;
   font-size: 1rem;
   color: #333;
   font-weight: bold;
-  transition: background-color 100ms ease-in; color: 100ms ease-in;
+  transition: background-color 100ms ease-in; color: 100ms ease-in; transform: 0ms ease;
+  box-shadow: 0 3px lightblue;
+  position: relative;
 }
-button:hover { cursor: pointer; background: green; color: #fff; }
+button::before { content: ' '; background: url(i/star.svg); height: 48px; width: 48px; position: absolute; bottom: -2rem; left: -1rem; opacity: 0; }
+button::after {  content: ' '; background: url(i/star.svg); height: 48px; width: 48px; position: absolute; bottom: -2rem; right: -2rem; opacity: 0; }
+button:active { box-shadow: none; transform: translateY(3px); cursor: pointer;
+background: lightblue; background-position: 100px; }
+button:hover { cursor: pointer; opacity: 0.9; background: lightblue; }
 
 .card h2.flag { margin-top: 0; opacity: 1; transition: 100ms ease-in; }
-.card button.unanswered:hover { cursor: pointer; background: #666; color: #fff; }
-.card button.wrong { background: #c20; color: #fff; }
-.card button.correct { background: green; color: #fff; }
+.card button.wrong { background: darkred; border-color: darkred; color: #fff; box-shadow: 0 5px firebrick;  }
+.card button.correct { background: limegreen; border-color: lime; color: #fff; box-shadow: 0 5px lime; }
+.card button.correct::before { animation: sparkle 1s ease-out forwards; }
+.card button.correct::after { animation: sparkle2 1s ease-out forwards; }
 
-.gameover h2 { font-size: 4rem; color: #c20; }
+.gameover h2 { font-size: 4rem; color: darkred; font-family: 'Impact Regular'; }
 .gameover p { font-size: 1.5rem; }
 
 .score {
@@ -111,7 +139,27 @@ footer a:hover { color: darkgreen; }
   to { opacity: 1; }
 }
 
+@keyframes sparkle {
+  from { opacity: 0; bottom: -2rem; }
+  to { opacity: 0.5; bottom: -1rem; scale: 1.5; left: -2rem; transform: rotate(90deg); }
+}
+
+@keyframes sparkle2 {
+  from { opacity: 0; bottom: -2rem; }
+  to { opacity: 0.5; bottom: -1rem; scale: 2; right: -3rem; transform: rotate(-45deg); }
+}
+
 @media (max-width: 600px) { button { width: 80%; } }
+
+@media (orientation: landscape) {
+  body { height: 100vh; }
+  main { width: 40%; padding: 1rem; }
+  img { width: 20%; }
+  h2.flag { font-size: 3rem; }
+  .card button { font-size: 50%; }
+  footer { display: none; }
+
+}
 
 </style>
 </head>
@@ -121,7 +169,7 @@ footer a:hover { color: darkgreen; }
     <span class="score">0</span>
     <section class="intro">
       <h1>Guess The Flag</h1>
-      <img src="i/icon.svg" width="50%" alt="Blank flag with a question mark">
+      <img src="i/globe.jpeg" width="100%" alt="Blank flag with a question mark">
       <button>Start</button>
     </section>
 
@@ -145,8 +193,8 @@ import data from './js/data.json' with { type: "json" };
 
 const ratings = ['💩','🤣','😴','🤪','👎','😓','😅','😃','🤓','🔥','⭐'];
 const sfx = {
-  wrong: [1.02,0,65.40639,,.34,.2,2,1.09,,,,,,,,.1,,.33,.04],
-  correct: [1.26,,465,.06,.16,.43,2,.98,,,165,.03,.12,,,,,.45,.15,.21]
+  wrong: [,,129,.01,,.15,,,,,,,,5],
+  correct: [,,539,0,.04,.29,1,1.92,,,567,.02,.02,,,,.04]
 };
 const sfxPlay = n => zzfx(...sfx[n]);
  

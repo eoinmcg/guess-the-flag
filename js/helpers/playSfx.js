@@ -15,16 +15,9 @@ export default function playSfx(name){
   g.connect(context.destination);
   o.start(0);
 
-
-
   g.gain.exponentialRampToValueAtTime(
     0.00001, context.currentTime + delay
-  )
-// Stop the oscillator after 2500 milliseconds (2.5 seconds)
-// const stopTime = context.currentTime + .1; // convert milliseconds to seconds
-// o.stop(stopTime);
-
-
+  );
 }
 
 const isFirefox = navigator.userAgent.toLowerCase().includes('firefox');
