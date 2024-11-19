@@ -46,12 +46,9 @@ button::before { content: ' '; background: url(../i/star.svg); height: 32px; wid
 button::after {  content: ' '; background: url(../i/star.svg); height: 32px; width: 32px; position: absolute; bottom: -2rem; right: -2rem; opacity: 0; }
 button:active { box-shadow: none; transform: translateY(3px); cursor: pointer;
 background: lightblue; background-position: 100px; }
-button:hover { cursor: pointer; opacity: 0.9;
+button:hover {
+  cursor: pointer; opacity: 0.9;
   background: lightcyan;
-  background-image: linear-gradient(to left, aliceblue 0%, aliceblue 50%, lightcyan 51% lightcyan 100%);
-  background-repeat:no-repeat;
-  background-size: 200% 100%;
-  transition:background-size 1s, background-color 1s;
 }
 button.replay { width: 100%; font-size: 1.5rem; color: #333; }
 button.wrong { background: crimson; border-color: darkred; color: #fff; box-shadow: 0 5px firebrick;  }
