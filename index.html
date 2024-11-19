@@ -205,6 +205,28 @@ footer a:hover { color: darkgreen; }
 <script src="./zzfx.min.js"></script>
 <script type="module">
 
+const registerServiceWorker = async () => {
+  if ('serviceWorker' in navigator) {
+    try {
+      const registration = await navigator.serviceWorker.register(
+        'sw.js',
+        {
+          scope: './',
+        }
+      );
+      if (registration.installing) {
+        console.log('Service worker installing');
+      } else if (registration.waiting) {
+        console.log('Service worker installed');
+      } else if (registration.active) {
+        console.log('Service worker active');
+      }
+    } catch (error) {
+      console.error(`Registration failed with ${error}`);
+    }
+  }
+};
+
 export default async function loadCountries(file) {
   try {
     const response = await fetch(file);
@@ -363,6 +385,7 @@ document.body.classList.add('fade-in');
     .then((data) => {
       let game = new Game(data.countries);
       game.init();
+      registerServiceWorker();
       window.game = game;
     })
 });
