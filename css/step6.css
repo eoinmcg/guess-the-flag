@@ -22,9 +22,9 @@ main {
 }
 
 section { text-align: center; width: 100%; }
-h1 { font-size: 3rem; margin-bottom: 2rem; color: darkred; }
+h1 { font-size: 2.5rem; font-weight: bold; margin-bottom: 2rem; color: darkred; }
 section.intro p { margin-bottom: 2rem; }
-section.intro p.guess { font-size: 5rem; }
+section.intro p.guess { font-size: 8rem; }
 h2.flag { font-size: 10rem; margin: 0; color: #666; }
 
 button {
@@ -53,6 +53,7 @@ button:hover { cursor: pointer; opacity: 0.9;
   background-size: 200% 100%;
   transition:background-size 1s, background-color 1s;
 }
+button.replay { width: 100%; font-size: 1.5rem; color: #333; }
 button.wrong { background: crimson; border-color: darkred; color: #fff; box-shadow: 0 5px firebrick;  }
 button.correct { background: green; border-color: darkgreen; color: #fff; box-shadow: 0 5px darkgreen; }
 button.correct::before { animation: sparkle .5s ease-out forwards; }
