@@ -19,6 +19,7 @@ main {
   height: 80vh;
   background: #fff;
   padding: 2rem;
+  overflow: hidden;
 }
 
 section { text-align: center; width: 100%; }
