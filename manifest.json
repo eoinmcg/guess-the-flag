@@ -1,13 +1,15 @@
 {
-  "name": "Guess The Flag",
-  "description": "Test your knowledge of country flags.",
+  "name": "World Of Flags",
+  "description": "Flags of the World - How many can you guess?",
   "default_locale": "en",
-  "display": "standalone",
   "version": "1.0",
   "start_url": ".",
-  "background_color": "#dedede",
+  "background_color": "#fff",
   "color": "#333",
+  "orientation": "portrait",
+  "display": "fullscreen",
   "icons": [
+    { "src": "./i/icon-128.png", "type": "image/png", "sizes": "128x128" },
     { "src": "./i/icon-192.png", "type": "image/png", "sizes": "192x192" },
     { "src": "./i/icon-512.png", "type": "image/png", "sizes": "512x512" }
   ],
