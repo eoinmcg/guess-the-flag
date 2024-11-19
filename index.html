@@ -23,6 +23,9 @@ src: local('Impact Regular'), url('css/impact.woff') format('woff');
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
 }
 
 body {
@@ -41,7 +44,7 @@ main {
   height: 80vh;
   background: #fff;
   padding: 2rem;
-  overflow: hidden;
+  overflow-y: hidden;
 }
 
 main[data-state="intro"] .intro { display: block; }
@@ -111,6 +114,19 @@ button:hover { cursor: pointer; opacity: 0.9;
 -webkit-text-stroke: 1px #fff; }
 .gameover p { font-size: 1.5rem; }
 
+#mute {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    width: 2rem;
+    height: 2rem;
+    background-image: url(i/mute.svg);
+    background-size: cover;
+    opacity: 0.7;
+}
+#mute.muted { background-image: url('i/unmute.svg'); }
+#mute:hover { cursor: pointer; opacity: 1; }
+
 .score {
   position: absolute;
   top: 1em;
@@ -160,6 +176,7 @@ footer a:hover { color: darkgreen; }
 </head>
 <body>
 
+  <div id="mute"></div>
   <main data-state="intro">
     <span class="score">0</span>
     <section class="intro">
@@ -184,7 +201,7 @@ footer a:hover { color: darkgreen; }
 
 <script src="./zzfx.min.js"></script>
 <script type="module">
-// import data from './js/data.json' with { type: "json" };
+
 export default async function loadCountries(file) {
   try {
     const response = await fetch(file);
@@ -199,14 +216,19 @@ const sfx = {
   wrong: [,,129,.01,,.15,,,,,,,,5],
   correct: [,,539,0,.04,.29,1,1.92,,,567,.02,.02,,,,.04]
 };
-const sfxPlay = n => zzfx(...sfx[n]);
+const sfxPlay = (n) => {
+  if (game.muted) return;
+  zzfx(...sfx[n]);
+}
  
     class Game {
       constructor(countries, numChoices = 5, turns = 10) {
         this.masterCountries = countries;
         this.numChoices = numChoices;
         this.turns = turns;
+        this.muted = false;
         this.DOM = {
+          muteButton: document.querySelector('#mute'),
           intro: document.querySelector('.intro'),
           startButton: document.querySelector('.intro button'),
           gameover: document.querySelector('.gameover'),
@@ -223,6 +245,11 @@ const sfxPlay = n => zzfx(...sfx[n]);
       init() {
         this.DOM.startButton.addEventListener('click', (e) => {
           this.startGame();
+        }, false);
+
+        this.DOM.muteButton.addEventListener('click', (e) => {
+          this.muted = !this.muted;
+          this.DOM.muteButton.classList.toggle('muted');
         }, false);
 
         document.querySelector('.suggestions').addEventListener('click', (e) => {
