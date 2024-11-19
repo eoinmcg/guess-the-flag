@@ -1,6 +1,5 @@
 import loadCountries from "./helpers/loadCountries.js";
 import shuffle from "./helpers/shuffle.js";
-import playSfx from "./helpers/playSfx.js";
 
 // let's fetch some countries so we can get playing!
 loadCountries('js/data.json')
@@ -105,11 +104,9 @@ class Game {
     const correct = button.dataset.correct === 'true';
 
     if (correct) {
-      playSfx('correct');
       button.classList.add('correct');
       this.nextTurn();
     } else {
-      playSfx('wrong');
       button.classList.add('wrong');
     }
   }
