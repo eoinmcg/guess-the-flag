@@ -94,8 +94,6 @@ class Game {
   }
 
   checkAnswer(button) {
-
-
     // prevent clicks once round is finished
     if (this.DOM.play.classList.contains('slide-off')) {
       return;
@@ -120,7 +118,10 @@ class Game {
     }
 
     if (this.turn === this.numTurns) {
-      this.gameOver();
+      window.setTimeout(() => {
+        this.gameOver();
+        console.log('GAMEOVER')
+      }, 1500);
     } else {
       this.DOM.play.classList.remove('slide-on');
       this.DOM.play.classList.add('slide-off');
