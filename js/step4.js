@@ -1,6 +1,7 @@
 import loadCountries from "./helpers/loadCountries.js";
 import shuffle from "./helpers/shuffle.js";
 
+
 // let's fetch some countries so we can get playing!
 loadCountries('js/data.json')
   .then((data) => {

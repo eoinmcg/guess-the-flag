@@ -57,12 +57,11 @@ button.correct { background: green; border-color: darkgreen; color: #fff; box-sh
 button.correct::before { animation: sparkle .5s ease-out forwards; }
 button.correct::after { animation: sparkle2 .75s ease-out forwards; }
 
-.score { position: absolute; top: 1rem; font-size: 2rem; color: #777; font-weight: bold; }
+.score { position: absolute; top: 1rem; left: 50%; font-size: 2rem; color: #777; font-weight: bold; }
 .hide { display: none; }
 
 .slide-off { animation: 0.75s slide-off ease-out forwards; animation-delay: 1s;}
 .slide-on { animation: 0.75s slide-on ease-in; }
-.slide.no-delay { animation-delay: -2s !important; }
 .fade-in { opacity: 0; animation: 1s fade-in ease-out forwards; }
 
 @keyframes slide-off {
@@ -89,6 +88,12 @@ button.correct::after { animation: sparkle2 .75s ease-out forwards; }
 }
 
 
+/* ensure buttons look good on smaller screens */
 @media (max-width: 600px) {
   button { width: 80%; }
+}
+
+/* targetting touch screens */
+@media (pointer: coarse) {
+  button:hover { background: lightblue; }
 }

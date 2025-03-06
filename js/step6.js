@@ -29,8 +29,6 @@ class Game {
     // number of turns in a game
     this.numTurns = numTurns;
 
-    this.ratings = ['💩','🤣','😴','🤪','👎','😓','😅','😃','🤓','🔥','⭐'];
-
     // trigger the checkAnswer method when clicked
     this.DOM.answerButtons.forEach((button) => {
       button.onclick = (e) => {
@@ -51,7 +49,7 @@ class Game {
       const targetClass = e.target.classList;
       if (targetClass.contains('slide-off')) {
         this.showCountries();
-        targetClass.remove('slide-off', 'no-delay');
+        targetClass.remove('slide-off');
         targetClass.add('slide-on');
       }
     });
@@ -64,7 +62,7 @@ class Game {
     this.DOM.score.classList.remove('hide');
     // show play area & score
     this.DOM.play.classList.remove('hide');
-    this.DOM.play.classList.add('slide-on', 'no-delay');
+    this.DOM.play.classList.add('slide-on');
     // randomize countries
     this.countries = shuffle([...this.masterCountries]);
 
@@ -133,8 +131,10 @@ class Game {
   }
 
   gameOver() {
+    const ratings = ['💩','🤣','😴','🤪','👎','😓','😅','😃','🤓','🔥','⭐'];
     const percentage = (this.score / this.numTurns) * 100;
-    const rating = Math.ceil(percentage / this.ratings.length);
+    // calculate rating based on score
+    const rating = Math.ceil(percentage / ratings.length);
 
     this.DOM.play.classList.add('hide');
     this.DOM.gameover.classList.remove('hide');
@@ -143,7 +143,7 @@ class Game {
     this.DOM.result.innerHTML = `
       ${this.score} out of ${this.numTurns}
       <br />
-      Your rating: ${this.ratings[rating]}
+      Your rating: ${ratings[rating]}
       `;
   }
 }

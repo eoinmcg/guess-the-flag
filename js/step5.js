@@ -43,7 +43,7 @@ class Game {
     });
 
     // listen to animation end events
-    // in the case of .move-on, we change the card,
+    // in the case of .slide-off, we change the card,
     // then move it back on screen
     this.DOM.play.addEventListener('animationend', (e) => {
       const targetClass = e.target.classList;
@@ -77,7 +77,6 @@ class Game {
 
     // update the DOM, starting with the flag
     this.DOM.flag.innerText = answer.flag;
-    console.log('NEW ANSWER', answer, this.DOM.play.classList);
     // update each button with a country name
     selected.forEach((country, index) => {
       const button = this.DOM.answerButtons[index];
